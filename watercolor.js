@@ -1,5 +1,4 @@
 var Transform = require('stream').Transform,
-    os = require('os'),
     colors = {
         black : '\u001b[30m',
         gray : '\u001b[90m',
@@ -17,7 +16,8 @@ var Transform = require('stream').Transform,
     },
     styles = {
         underline : '\u001b[4m',
-        blink : '\u001b[5m'
+        blink : '\u001b[5m',
+        reset : '\u001b[0m'
     };
 
 function addNewLine(string) {
@@ -32,8 +32,10 @@ function Watercolor(opts) {
     if (!(this instanceof Watercolor)) {
         return new Watercolor();
     }
-    this.color = colors[opts.color] || '';
-    this.style = styles[opts.style] || '';
+    if (opts) {
+        this.color = colors[opts.color] || '';
+        this.style = styles[opts.style] || '';
+    }
     Transform.call(this, { decodeStrings : false });
 }
 
@@ -49,6 +51,11 @@ Watercolor.prototype._transform = function(chunk, encoding, next) {
 };
 
 Watercolor.prototype.setOpts = function(opts) {
+    if (typeof opts === 'string' && opts === 'reset') {
+        this.color = colors.reset;
+        this.style = colors.reset;
+        return;
+    }
     if (typeof opts !== 'object') {
         this.emit('error', "must pass options object into setOpts");
     }
