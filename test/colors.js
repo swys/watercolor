@@ -9,15 +9,16 @@ var colors = {
     cyan : '\u001b[96m',
     white : '\u001b[37m',
     reset : '\u001b[0m',
-    error : '\u001b[91m',
-    warn : '\u001b[93m',
-    success : '\u001b[92m'
 },
 styles = {
     underline : '\u001b[4m',
     blink : '\u001b[5m',
-    reset : '\u001b[0m'
 };
+
+colors.success = colors.green;
+colors.warn = colors.yellow;
+colors.error = colors.red;
+styles.reset = colors.reset;
 
 module.exports = {
     colors : colors,

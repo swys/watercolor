@@ -5,9 +5,9 @@ var spawn = require('child_process').spawn,
     path = require('path'),
     success = [],
     failed = [],
-    Watercolor = require('../../watercolor/watercolor.js'),
-    failTest = { color : 'error' },
-    passTest = { color : 'success' },
+    Watercolor = require('../watercolor.js'),
+    failTest = { color : 'error', style : 'normal'},
+    passTest = { color : 'success', style : 'normal'},
     watercolor = Watercolor(passTest);
 
 watercolor.on('error', function(err) {
@@ -22,7 +22,7 @@ function testQ(tests) {
     function next() {
         if (index === tests.length - 1) {
             console.log();
-            watercolor.setOpts({color : 'yellow'});
+            watercolor.setOpts({color : 'yellow', style : 'underline'});
             watercolor.write("Summery : ");
             watercolor.setOpts(passTest);
             watercolor.write("Successful tests : " + success.length);
@@ -54,11 +54,14 @@ function runTest(test, cb) {
     }, timeout);
 
     child.on('exit', function(exitcode) {
+        if (exitcode !== 0) {
+            exitCode = 1;
+        }
         clearTimeout(timer);
         console.log(test + " exited with Exit Code : " + exitcode);
         watercolor.setOpts((exitCode ? failTest : passTest));
         watercolor.write((exitCode ? '✘' : '✔') + ' ' + path.basename(test));
-        (exitCode ? failed : success).push(test);
+        (exitcode ? failed : success).push(test);
         cb();
     });
 }
