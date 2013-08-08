@@ -59,8 +59,8 @@ function runTest(test, cb) {
         }
         clearTimeout(timer);
         console.log(test + " exited with Exit Code : " + exitcode);
-        watercolor.setOpts((exitCode ? failTest : passTest));
-        watercolor.write((exitCode ? '✘' : '✔') + ' ' + path.basename(test));
+        watercolor.setOpts((exitcode ? failTest : passTest));
+        watercolor.write((exitcode ? '✘' : '✔') + ' ' + path.basename(test));
         (exitcode ? failed : success).push(test);
         cb();
     });

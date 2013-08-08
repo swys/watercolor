@@ -9,13 +9,13 @@ var Transform = require('stream').Transform,
         magenta : '\u001b[95m',
         cyan : '\u001b[96m',
         white : '\u001b[37m',
-        reset : '\u001b[0m',
         normal : ''
     },
     styles = {
         underline : '\u001b[4m',
         blink : '\u001b[5m',
-    };
+    },
+    reset = '\u001b[0m';
 colors.success = colors.green;
 colors.warn = colors.yellow;
 colors.error = colors.red;
@@ -54,24 +54,28 @@ Watercolor.prototype._transform = function(chunk, encoding, next) {
     if (addNewLine(chunk)) {
         nl = '\n';
     }
-    this.push(this.color + this.style + chunk + colors.reset + nl);
+    this.push(this.color + this.style + chunk + reset + nl);
     next();
 };
 
 Watercolor.prototype.setOpts = function(opts) {
     if (typeof opts === 'string' && opts === 'normal') {
-        this.color = colors.normal;
-        this.style = styles.normal;
+        this.color = '';
+        this.style = '';;
         return;
     }
     if (typeof opts !== 'object') {
         this.emit('error', "must pass options object into setOpts");
         return;
     }
+    if (opts.color === 'normal' || opts.color === '') {
+        this.color = '';
+    } else {
+        this.color = colors[opts.color] || this.color;
+    }
     this.color = colors[opts.color] || this.color;
     if (opts.style === 'normal' || opts.style === '') {
         this.style = '';
-        return;
     } else {
         this.style = styles[opts.style] || this.style; 
     }

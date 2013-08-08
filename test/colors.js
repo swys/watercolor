@@ -8,19 +8,21 @@ var colors = {
     magenta : '\u001b[95m',
     cyan : '\u001b[96m',
     white : '\u001b[37m',
-    reset : '\u001b[0m',
+    normal : ''
 },
 styles = {
     underline : '\u001b[4m',
     blink : '\u001b[5m',
-};
+},
+reset = '\u001b[0m';
 
 colors.success = colors.green;
 colors.warn = colors.yellow;
 colors.error = colors.red;
-styles.reset = colors.reset;
+styles.normal = colors.normal;
 
 module.exports = {
     colors : colors,
-    styles : styles
+    styles : styles,
+    reset : reset
 };
