@@ -6,18 +6,17 @@ var options = {
     watercolor = Watercolor(options),
     fs = require('fs'),
     test = require('tape'),
-    inspector = require('./inspector.js'),
+    stream = require('stream'),
+    pass = stream.PassThrough({ encoding : 'utf-8'}),
     times = 0,
-    colorz = require('./colors.js'),
+    colorz = require('../colors.js'),
     colorKey = ['yellow', 'gray', 'magenta'],
     styleKey = ['normal', 'normal', 'normal'];
 
 
 test('verify color values are being written', function(t) {    
     t.plan(3);
-    var inspect = inspector(); 
-
-    inspect.on('readable', function() {
+    pass.on('readable', function() {
         var chunk = this.read(),
             data = chunk.toString().split('\n');
         t.equal(data[0].toString().substr(0, 5), colorz.colors[colorKey[times]] + colorz.styles[styleKey[times]]);
@@ -32,5 +31,5 @@ test('verify color values are being written', function(t) {
     watercolor.setOpts({color : 'magenta'});
     watercolor.write('GOODBYE!!!!\n');
 
-    watercolor.pipe(inspect, { end : false }).pipe(process.stdout);
+    watercolor.pipe(pass, { end : false }).pipe(process.stdout);
 });

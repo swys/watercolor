@@ -8,9 +8,9 @@ var Watercolor = require('../watercolor.js');
     colorKeys = ['red', 'white', 'blue'],
     colorIdx = 0,
     src = null,
-    colorz = require('./colors.js');
+    colorz = require('../colors.js');
 
-test('stream file to red white and blue', function(t) {
+test('1 Stream colored 3 different ways', function(t) {
     t.plan(3);
     for (var i = 0; i < colorKeys.length; i += 1) {
         src = fs.createReadStream(__dirname + path.sep + 'run.js', { encoding : 'utf-8', start : start, end : end });

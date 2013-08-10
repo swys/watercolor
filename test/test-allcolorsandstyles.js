@@ -2,8 +2,9 @@ var Watercolor = require('../watercolor.js'),
     watercolor = Watercolor({color : 'red'}),
     i,
     j,
-    inspector = require('./inspector.js'),
-    colorz = require('./colors.js'),
+    stream = require('stream'),
+    pass = stream.PassThrough({ encoding : 'utf-8'}),
+    colorz = require('../colors.js'),
     test = require('tape'),
     allcolors = Object.keys(colorz.colors),
     allstyles = Object.keys(colorz.styles),
@@ -11,14 +12,15 @@ var Watercolor = require('../watercolor.js'),
     testCount = 0,
     styleCount = 0,
     pattern = /^[^T]*T/,
-    values = [];
+    values = [],
+    guesses = [];
 
 test('print all possible colors and styles', function(t) {
     t.plan(39);
-    var inspect = inspector();
-    inspect.on('readable', function() {
+    pass.on('readable', function() {
         var chunk = this.read(),
-            data = pattern.exec(chunk.toString());
+            data = pattern.exec(chunk),
+            see = [chunk];
         if (data === null) {
             return;
         }
@@ -28,6 +30,7 @@ test('print all possible colors and styles', function(t) {
             count = 0;
             styleCount += 1;
         }
+        guesses.push(colorz.colors[allcolors[count]] + colorz.styles[allstyles[styleCount]]);
         t.equal(values[testCount], colorz.colors[allcolors[count]] + colorz.styles[allstyles[styleCount]]);
         process.stdout.write(chunk);
         count += 1;
@@ -35,13 +38,18 @@ test('print all possible colors and styles', function(t) {
         
     });
 
+    watercolor.on('error', function(err) {
+        console.log("Should never make it here:(");
+        console.log(err);
+    });
+
     for (i = 0; i < allstyles.length; i += 1) {
         for (j = 0; j < allcolors.length; j += 1) {
             watercolor.setOpts({color : allcolors[j], style: allstyles[i]});
-            watercolor.write("This color should be " + allcolors[j] + " and style should be " + allstyles[i]);
+            watercolor.write("This color should be " + allcolors[j] + " and style should be " + allstyles[i] + "\n");
         }
     }
     watercolor.setOpts('normal');
-    watercolor.end("All Done!!!!");
-    watercolor.pipe(inspect);
+    watercolor.end("All Done!!!!\n");
+    watercolor.pipe(pass);
 });
