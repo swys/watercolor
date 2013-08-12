@@ -1,20 +1,30 @@
 {
   "name": "watercolor",
   "version": "0.0.1",
-  "description": "Watercolor is a Stream 2 Transform stream that will output styled and colored text. Pipe a stream or write to it directly. Outputted text will be formatted based on the options passed into the instance. Change style and color option anytime using the setOpts function.",
+  "description": "Watercolor is a Stream 2 Transform stream that will output styled and colored text. Pipe a stream or write to it directly. Outputted text will be formatted based on the options passed into the instance. Change style and color option anytime using the .color and .style methods...also these methods are chainable.",
   "main": "colorLog.js",
   "scripts": {
     "test": "node test/run.js"
   },
   "keywords": [
-    "color streams",
+    "color stream",
+    "streams2",
     "color log",
     "console",
+    "color console",
     "styled output",
     "underline text",
     "color text"
   ],
-  "author": "swys <abacus822@gmail.com>",
+  "repository" : {
+      "type" : "git",
+      "url" : "https://github.com/swys/watercolor.git"
+  },
+  "homepage" : "https://github.com/swys/watercolor",
+  "author": {
+      "name" : "Kevin Carroll",
+      "email" : "abacus822@gmail.com"
+  },
   "license": "MIT",
   "dependencies": {
     "tape": "~1.0.4"
