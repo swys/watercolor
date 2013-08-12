@@ -24,12 +24,12 @@ test('verify color values are being written', function(t) {
         process.stdout.write(chunk);
     });
 
-    watercolor.setOpts({color : 'yellow'});
+    watercolor.color('yellow');
     watercolor.write('hello\n');
-    watercolor.setOpts({color : 'gray'});
+    watercolor.color('gray');
     watercolor.write('world\n');
-    watercolor.setOpts({color : 'magenta'});
+    watercolor.color('magenta');
     watercolor.write('GOODBYE!!!!\n');
 
-    watercolor.pipe(pass, { end : false }).pipe(process.stdout);
+    watercolor.pipe(pass);
 });

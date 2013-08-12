@@ -16,17 +16,27 @@ test('1 Stream colored 3 different ways', function(t) {
         src = fs.createReadStream(__dirname + path.sep + 'run.js', { encoding : 'utf-8', start : start, end : end });
         start += 500;
         end += 500;
-        src.pipe(watercolor, { end : false });
+        src.pipe(watercolor, {end : false});
     }
+
     watercolor.on('readable', function() {
-        var chunk = watercolor.read();
-            data = chunk.toString().split('\n')[0].toString().substr(0,5);
+        var chunk = this.read(),
+            data = chunk.split('\n')[0].toString().substr(0,5);
+        console.log("Data :", [data]);
         t.equal(data, colorz.colors[colorKeys[colorIdx]]);
         colorIdx += 1;
         var nextColor = colorKeys[colorIdx];
-        watercolor.setOpts({color : nextColor});
-        process.stdout.write(chunk.toString());
+        if (nextColor !== undefined) {
+            watercolor.color(colorKeys[colorIdx]);
+        }
+        process.stdout.write(chunk);
     });
+
+    watercolor.on('error', function(err) {
+        watercolor.color('error').style('normal');
+        watercolor.write(err);
+    });
+
 });
 
         

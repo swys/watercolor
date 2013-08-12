@@ -8,7 +8,7 @@ watercolor.on('error', function(err) {
 watercolor.write('hello\n');
 watercolor.color('red').style('underline');
 watercolor.write('world\n');
-watercolor.color('gold').style('normal');
+watercolor.color('yellow').style('normal');
 watercolor.write('I\'m Yellow\n');
 watercolor.end();
 watercolor.pipe(process.stdout);

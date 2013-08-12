@@ -19,8 +19,7 @@ test('print all possible colors and styles', function(t) {
     t.plan(39);
     pass.on('readable', function() {
         var chunk = this.read(),
-            data = pattern.exec(chunk),
-            see = [chunk];
+            data = pattern.exec(chunk);
         if (data === null) {
             return;
         }
@@ -45,11 +44,11 @@ test('print all possible colors and styles', function(t) {
 
     for (i = 0; i < allstyles.length; i += 1) {
         for (j = 0; j < allcolors.length; j += 1) {
-            watercolor.setOpts({color : allcolors[j], style: allstyles[i]});
+            watercolor.color(allcolors[j]).style(allstyles[i]);
             watercolor.write("This color should be " + allcolors[j] + " and style should be " + allstyles[i] + "\n");
         }
     }
-    watercolor.setOpts('normal');
+    watercolor.color('normal').style('normal');
     watercolor.end("All Done!!!!\n");
     watercolor.pipe(pass);
 });

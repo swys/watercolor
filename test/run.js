@@ -22,13 +22,13 @@ function testQ(tests) {
     function next() {
         if (index === tests.length - 1) {
             console.log();
-            watercolor.setOpts({color : 'yellow', style : 'underline'});
+            watercolor.color('yellow').style('underline');
             watercolor.write("Summery : \n");
-            watercolor.setOpts(passTest);
+            watercolor.color('success').style('normal');
             watercolor.write("Successful tests : " + success.length + "\n");
-            watercolor.setOpts(failTest);
+            watercolor.color('error');
             watercolor.write("Failed tests : " + failed.length + "\n") ;
-            watercolor.setOpts((exitCode ? failTest : passTest));
+            watercolor.color((exitCode ? 'error' : 'success'));
             watercolor.write("Final Exit Code : " + exitCode + "\n");
         } else {
             index += 1;
@@ -50,7 +50,7 @@ function runTest(test, cb) {
 
     timer = setTimeout(function() {
         child.kill();
-        watercolor.setOpts({color : 'error', style : 'normal'});
+        watercolor.color('error').style('normal');
         watercolor.write(test + " : timed out\n");
     }, timeout);
 
@@ -60,7 +60,7 @@ function runTest(test, cb) {
         }
         clearTimeout(timer);
         console.log(test + " exited with Exit Code : " + exitcode);
-        watercolor.setOpts((exitcode ? failTest : passTest));
+        watercolor.color((exitcode ? 'error' : 'success'));
         watercolor.write((exitcode ? '✘' : '✔') + ' ' + path.basename(test) + "\n");
         (exitcode ? failed : success).push(test);
         cb();
