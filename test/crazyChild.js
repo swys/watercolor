@@ -9,6 +9,7 @@ for (var i = 0; i < times; i += 1) {
     range.push(i);
 }
 
+randUM(range);
 
 delay.forEach(function(val) {
     writer(val, range.pop());
