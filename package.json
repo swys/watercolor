@@ -1,6 +1,6 @@
 {
   "name": "watercolor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Watercolor is a Stream 2 Transform stream that will output styled and colored text. Pipe a stream or write to it directly. Outputted text will be formatted based on the options passed into the instance.",
   "main": "watercolor.js",
   "directories" : {
