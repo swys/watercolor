@@ -15,11 +15,14 @@ example
 
 ####Write directly to it :
 
-```var Watercolor = require('watercolor'),
+
+```
+var Watercolor = require('watercolor'),
     watercolor = Watercolor({
         style : 'normal',
         color : 'red'
     });
+    
 watercolor.write("Hello\n");
 watercolor.end("World\n");
 watercolor.pipe(process.stdout);
@@ -32,26 +35,15 @@ The call to `watercolor.end` will output __*World*__ in red text with no styling
 ####Pipe a readable stream to it :
  
 
-```var Watercolor = require('watercolor'),
-    watercolor({
-        style : 'underline',
-        color : 'yellow'
-    }),
-    fs = require('fs'),
-    readableStream = fs.createReadStream('./path/to/file');
-readableStream.pipe(watercolor).pipe(process.stdout);
 ```
-
-####Pipe a readable stream to it :
-
-
-```var Watercolor = require('watercolor'),
+var Watercolor = require('watercolor'),
     watercolor({
         style : 'underline',
         color : 'yellow'
     }),
     fs = require('fs'),
     readableStream = fs.createReadStream('./path/to/file');
+
 readableStream.pipe(watercolor).pipe(process.stdout);
 ```
 
@@ -62,9 +54,10 @@ usage
 I've mainly been using this in my test runner to output a colored Summery report so I can easily see if tests pass/fail by color.
 You can hook this into `child_process` `stdout` and `stderr` to get realtime color queues if there are errors occurring with the other node processess you are running.
 
-####Color seperate `child_process.stdout` and `child_process.stderr`
+#####Color seperate `child_process.stdout` and `child_process.stderr`
 
-```var Watercolor = require('watercolor'),
+```
+var Watercolor = require('watercolor'),
     errTxt = watercolor({
         color : 'error'
     }),
@@ -73,10 +66,13 @@ You can hook this into `child_process` `stdout` and `stderr` to get realtime col
     }),
     spawn = require('child_process').spawn(),
     child = spawn('node', ['myChild.js']);
+    
 child.process.stderr.write("Something went wrong! I will print in RED\n");
 child.process.stdout.write("I\'m just doing what I should be doing, and in GREEN\n");
+
 child.stdout.pipe(successTxt).pipe(process.stdout);
 child.stderr.pipe(errTxt).pipe(process.stdout);
+
 child.on('exit', function(exitcode) {
     (exitcode ? errTxt : successTxt).write("Ended with exitcode : " + exitcode);
 });
@@ -87,6 +83,8 @@ The above code will format the child's `stdout` to print `green` text out to the
 Child's `stderr` will be formatted as `red` text out to the console.
 
 The `exitcode` statement will print either `green` or `red` depending on the outcome.
+
+*Note :*
 
 `success` is mapped to the color green.
 
@@ -101,14 +99,29 @@ Another possible use case would be to color seperate I/O from different sources.
 options
 =======
 
+You can initialize watercolor with an options object containing `color` and/or `style`.
+
+#####example
+
+```
+var watercolor = require('watercolor'),
+    greenText = watercolor({
+        color : 'green',
+        style : 'underline'
+    });
+
+greenText.write("This text will be green and also underlined!\n");
+```
+
 ##.color() method
 
 This method takes a `string` argument. Simply pass in the color you want to change to.
 
 #####example
-```watercolor.color('blue');```
+`watercolor.color('blue');`
 
-__Note :__
+*Note :*
+
 Passing in `'normal'` to this method will set color back to your default text color.
 
 ##.style() method
@@ -116,16 +129,27 @@ Passing in `'normal'` to this method will set color back to your default text co
 This method takes a `string` argument. Simply pass in the style you want to change to.
 
 #####example
-```watercolor.style('underline');```
+`watercolor.style('underline');`
 
-__Note :__
+*Note :*
+
 Passing in `'normal'` to this method will set color back to your default style...which is no style.
 
 ##Chainable API
 
 These methods are chainable so you do stuff like :
 
-```watercolor.color('green').style('blink');```
+`watercolor.color('green').style('blink');`
+
+This will change the color to `green` and style to `blink`
+
+`watercolor.color('red');`
+
+This will change the color to `red` and style still be `blink`
+
+`watercolor.color('yellow').style('normal');`
+
+This is change the color to `yellow` and change the style to `normal` or no style.
 
 ##available colors
 
@@ -139,5 +163,18 @@ These methods are chainable so you do stuff like :
 
 `underline` `blink` `normal`
 
-__Note :__
+*Note :*
+
 I realize that there are a few other options such as `bold` or `italic` that I've seen elsewhere but when I tested them on my computer (Mac OSX Lion) they did not work. I didn't want to put anything in here that I could not test myself. If you know of any colors or styles that do work and should be included please feel free to file an issue.
+
+tests
+=======
+
+`npm test`
+
+Look in the test directory for some more details
+
+license
+=======
+
+MIT
