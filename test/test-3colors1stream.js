@@ -22,7 +22,6 @@ test('1 Stream colored 3 different ways', function(t) {
     watercolor.on('readable', function() {
         var chunk = this.read(),
             data = chunk.split('\n')[0].toString().substr(0,5);
-        console.log("Data :", [data]);
         t.equal(data, colorz.colors[colorKeys[colorIdx]]);
         colorIdx += 1;
         var nextColor = colorKeys[colorIdx];
